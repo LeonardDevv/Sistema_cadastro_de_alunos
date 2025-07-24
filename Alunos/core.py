@@ -1,6 +1,8 @@
 import json
 import os
 
+alunos = []
+
 if os.path.exists('alunos.json'):
     try:
         with open('alunos.json', 'r', encoding='utf8') as f:
@@ -19,11 +21,19 @@ def cadastrar_aluno():
                 matricula = int(input("Digite a matrícula do aluno: "))
     idade = int(input("Digite a idade do aluno: "))
     lista_de_notas = []
+
+
+    if sum(lista_de_notas) > 0:
+         media = sum(lista_de_notas) / len(lista_de_notas) 
+    else:
+         media = 0
+
     novo_aluno = {
         "nome": nome,
         "matricula": matricula,
         "idade": idade,
         "notas": lista_de_notas,
+        "media": media,
         "status": False
     }
     alunos.append(novo_aluno)
@@ -52,7 +62,7 @@ def adicionar_nota():
 def listar_alunos():
     print(f"\n\n{'=' * 30}\nLista de alunos \n{'=' * 30}")
     for aluno in alunos:
-        print(f"Nome do aluno: {aluno['nome']} \nMatrícula do aluno: {aluno['matricula']} \nIdade do aluno: {aluno['idade']} \nNotas do aluno: {aluno['notas']} \n{'-' * 30}")
+        print(f"Nome do aluno: {aluno['nome']} \nMatrícula do aluno: {aluno['matricula']} \nIdade do aluno: {aluno['idade']} \nNotas do aluno: {aluno['notas']} \nMédia do aluno: {aluno['media']} \n{'-' * 30}")
 
 
 def atualizar_aluno():
@@ -98,7 +108,7 @@ def deletar_aluno():
 
 def iniciar():
     while True:
-        inicio = int(input("\n\nEscolha uma opção: \n[ 1 ] - Cadastra aluno \n[ 2 ] - Adicionar nota \n[ 3 ] - Listar alunos \n[ 4 ] - Atualizar dados do aluno \n[ 5 ] - Deletar aluno \n[ 6 ] - Sair e salvar dados\n"))
+        inicio = int(input("\n\nEscolha uma opção: \n[ 1 ] - Cadastra aluno \n[ 2 ] - Adicionar nota \n[ 3 ] - Listar alunos \n[ 4 ] - Atualizar dados do aluno \n[ 5 ] - Deletar aluno \n[ 6 ] - Salvar dados em .txt \n[ 7 ] - Sair e salvar dados\n"))
         if inicio == 1:
             cadastrar_aluno()
         elif inicio == 2:
@@ -110,12 +120,18 @@ def iniciar():
         elif inicio == 5:
             deletar_aluno()
         elif inicio == 6:
+            try:
+                 with open('alunos.txt', 'w', encoding='utf8') as s:
+                      json.dump(alunos, s, ensure_ascii=False, indent=4)
+                      print("Dados salvos com sucesso em alunos.txt")
+            except Exception as e:
+                 print(f"Ocorreu um erro ao salvar os dados: {e}")
+        elif inicio == 7:
             print("Salvando dados e saindo...")
             try:
                 with open('alunos.json', 'w', encoding='utf8') as f:
                     json.dump(alunos, f, ensure_ascii=False, indent=4)
                     print("Dados salvos com sucesso em alunos.json")
-                    return
             except Exception as e:
                 print(f"Ocorreu um erro ao salvar os dados: {e}")
 
