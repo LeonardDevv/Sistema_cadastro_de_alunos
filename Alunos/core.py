@@ -22,11 +22,7 @@ def cadastrar_aluno():
     idade = int(input("Digite a idade do aluno: "))
     lista_de_notas = []
 
-
-    if sum(lista_de_notas) > 0:
-         media = sum(lista_de_notas) / len(lista_de_notas) 
-    else:
-         media = 0
+    media = float()
 
     novo_aluno = {
         "nome": nome,
@@ -55,6 +51,7 @@ def adicionar_nota():
                     nova_nota = float(input("Informe a nova nota do aluno: "))
                     aluno['notas'].append(nova_nota)
                     continuar = input("Você deseja inserir mais alguma nota? (S/N)").strip().upper()
+                    aluno['media'] = sum(aluno['notas']) / len(aluno['notas'])
                     if continuar in "N":
                         return
 
@@ -62,7 +59,7 @@ def adicionar_nota():
 def listar_alunos():
     print(f"\n\n{'=' * 30}\nLista de alunos \n{'=' * 30}")
     for aluno in alunos:
-        print(f"Nome do aluno: {aluno['nome']} \nMatrícula do aluno: {aluno['matricula']} \nIdade do aluno: {aluno['idade']} \nNotas do aluno: {aluno['notas']} \nMédia do aluno: {aluno['media']} \n{'-' * 30}")
+        print(f"Nome do aluno: {aluno['nome']} \nMatrícula do aluno: {aluno['matricula']} \nIdade do aluno: {aluno['idade']} \nNotas do aluno: {aluno['notas']} \nMédia do aluno: {aluno['media']:.2f} \n{'-' * 30}")
 
 
 def atualizar_aluno():
